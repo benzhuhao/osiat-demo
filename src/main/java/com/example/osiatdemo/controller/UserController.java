@@ -3,23 +3,59 @@ package com.example.osiatdemo.controller;
 
 import com.example.osiatdemo.model.User;
 import com.example.osiatdemo.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping(value = "/get/{userId}", produces = "application/json")
-    public ResponseEntity<User> getUserById(@PathVariable String id) {
-        return new User();
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping(
+            value = "/save",
+            produces = "application/json",
+            consumes = "application/json"
+    )
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
+
+    @GetMapping(
+            value = "/getById/{userId}",
+            produces = "application/json"
+    )
+    public ResponseEntity<User> getUserById(@PathVariable( "userId" ) String id) {
+
+        User user = userService.getUserById(id);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PutMapping(
+            value = "/updateUser",
+            produces = "application/json",
+            consumes = "application/json"
+    )
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+
+        User updateUser = userService.updateUser(user);
+        return new ResponseEntity<>(updateUser, HttpStatus.OK);
+    }
+
+    @DeleteMapping(
+            value = "/delete/{userId}"
+    )
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("userId") String id) {
+        boolean isDelete = userService.deleteUserById(id);
+
+        return new ResponseEntity<>(isDelete, HttpStatus.NO_CONTENT);
     }
 }

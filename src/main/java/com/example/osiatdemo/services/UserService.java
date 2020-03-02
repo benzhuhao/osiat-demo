@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    private User createUser(User user) {
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
+    public User createUser(User user) {
         return userRepo.save(user);
     }
 
@@ -20,11 +23,12 @@ public class UserService {
         return userRepo.findById(Integer.valueOf(id)).orElse(null);
     }
 
-    public User updateUserById(User user) {
+    public User updateUser(User user) {
         return userRepo.save(user);
     }
 
     public boolean deleteUserById(String userId) {
         userRepo.deleteById(Integer.valueOf(userId));
+        return userRepo.findById(Integer.valueOf(userId)).orElse(null) == null;
     }
 }
