@@ -1,6 +1,7 @@
 package com.example.osiatdemo.controller;
 
 
+import com.example.osiatdemo.model.APIError;
 import com.example.osiatdemo.model.User;
 import com.example.osiatdemo.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -32,10 +33,9 @@ public class UserController {
             value = "/getById/{userId}",
             produces = "application/json"
     )
-    public ResponseEntity<User> getUserById(@PathVariable( "userId" ) String id) {
+    public ResponseEntity getUserById(@PathVariable( "userId" ) String id) {
 
         User user = userService.getUserById(id);
-
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

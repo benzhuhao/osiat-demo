@@ -1,10 +1,14 @@
 package com.example.osiatdemo.services;
 
 
+import com.example.osiatdemo.error.InvalidRequestParamTypeException;
+import com.example.osiatdemo.error.UserNotFoundException;
 import com.example.osiatdemo.model.User;
 import com.example.osiatdemo.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.UnexpectedTypeException;
 
 @Service
 public class UserService {
@@ -20,7 +24,15 @@ public class UserService {
     }
 
     public User getUserById(String id) {
-        return userRepo.findById(Integer.valueOf(id)).orElse(null);
+
+        int num;
+        try {
+            num = Integer.parseInt(id);
+        } catch (NumberFormatException ex) {
+            throw new InvalidRequestParamTypeException(id, ex.getMessage());
+        }
+        return userRepo.findById(num)
+                .orElseThrow(()-> new UserNotFoundException(id));
     }
 
     public User updateUser(User user) {
@@ -28,7 +40,18 @@ public class UserService {
     }
 
     public boolean deleteUserById(String userId) {
-        userRepo.deleteById(Integer.valueOf(userId));
-        return userRepo.findById(Integer.valueOf(userId)).orElse(null) == null;
+
+        int num;
+        try {
+            num = Integer.parseInt(userId);
+        } catch (NumberFormatException ex) {
+            throw new InvalidRequestParamTypeException(userId, ex.getMessage());
+        }
+        if (userRepo.findById(num).orElse(null) == null) {
+            return false;
+        } else {
+            userRepo.deleteById(num);
+            return true;
+        }
     }
 }
