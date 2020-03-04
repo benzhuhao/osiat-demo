@@ -5,10 +5,7 @@ import com.example.osiatdemo.error.InvalidRequestParamTypeException;
 import com.example.osiatdemo.error.UserNotFoundException;
 import com.example.osiatdemo.model.User;
 import com.example.osiatdemo.repo.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.validation.UnexpectedTypeException;
 
 @Service
 public class UserService {

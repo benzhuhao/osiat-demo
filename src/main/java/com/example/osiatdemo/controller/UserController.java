@@ -1,7 +1,6 @@
 package com.example.osiatdemo.controller;
 
 
-import com.example.osiatdemo.model.APIError;
 import com.example.osiatdemo.model.User;
 import com.example.osiatdemo.services.UserService;
 import org.springframework.http.HttpStatus;
