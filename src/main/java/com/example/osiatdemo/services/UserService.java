@@ -7,6 +7,11 @@ import com.example.osiatdemo.model.User;
 import com.example.osiatdemo.repo.UserRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class UserService {
 
@@ -30,6 +35,13 @@ public class UserService {
         }
         return userRepo.findById(num)
                 .orElseThrow(()-> new UserNotFoundException(id));
+    }
+
+    public User[] getAllUsers() {
+        List<User> users = StreamSupport
+                .stream(userRepo.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+        return users.stream().toArray(User[]::new);
     }
 
     public User updateUser(User user) {

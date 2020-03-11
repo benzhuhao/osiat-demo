@@ -58,7 +58,19 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/responses/unexpectedError'
-
+  /listUsers:
+    get:
+      description: get list of users
+      consumes: []
+      responses:
+        200:
+          description: get all users
+          schema:
+            $ref: '#/definitions/users'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/APIError'
   /updateUser:
     put:
       parameters:
@@ -113,6 +125,12 @@ definitions:
       - first_name
       - last_name
       - age
+
+  users:
+    description: array of users
+    type: array
+    items:
+      $ref: '#/definitions/user'
 
   APIError:
     description: content any error from API

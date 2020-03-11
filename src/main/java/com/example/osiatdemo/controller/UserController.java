@@ -38,6 +38,16 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping(
+            value = "/getAllUsers",
+            produces = "application/json"
+    )
+    public ResponseEntity getUsers() {
+
+        User[] users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
     @PutMapping(
             value = "/updateUser",
             produces = "application/json",
